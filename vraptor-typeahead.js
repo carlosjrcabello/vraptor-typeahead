@@ -1,6 +1,3 @@
-/**
- * 
- */
 (function ( $ ) {
 
 	$.fn.vraptortypeahead = function(options) {
@@ -51,6 +48,10 @@
 					console.log("params");
 					console.log(args);
 				}
+				
+				ids 			= new Array();
+				descriptions 	= new Array();
+				fullObjects		= new Array();
 				
 				return $.post(settings.uri, args, function(data){
 					if(settings.debug){
