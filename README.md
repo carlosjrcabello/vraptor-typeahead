@@ -1,4 +1,4 @@
-A focused extension of typeahead from Twitter Bootstrap (2.3.x) to work with VRaptor MVC framework, on versions 3.x and 4.x.
+This is a simple extension for Twitter Bootstrap Typeahead (2.3.x) to work with Bootstrap 2 or 3 on Java projects with *VRaptor MVC framework*, on versions 3.x and 4.x.
 
 How to use
 
