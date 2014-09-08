@@ -20,7 +20,32 @@ public void findCidadesAJAX(Cidade cidade){
 	}
 }
 ```
-On your pages.
+On your JSP pages.
+
+```html
+<div class="form-group">
+	<label for="descricaoCidade">
+		<fmt:message key='label.cidade'/>
+	</label>
+	<input 
+		type="text" 
+		class="form-control input-lg" 
+		id="descricaoCidade" 
+		value="${perfil._cidade}"
+		placeholder="<fmt:message key='label.cidade.placeholder'/>"
+	/>
+	<input 
+		type="text" 
+		class="form-control input-lg" 
+		name="inscricao.idCidade"
+		id="idCidade" 
+		value="${perfil.idCidade}"
+	/>
+</div>
+```
+
+Still on JSP pages (attempts to c:url tag on uri proprety).
+
 ```javascript
 $("#descricaoCidade").vraptortypeahead({
 	//Number of chars to trigger the search.
@@ -48,4 +73,4 @@ $("#descricaoCidade").vraptortypeahead({
 
 Events and methods
 
-Comming...
+Comming soon...
