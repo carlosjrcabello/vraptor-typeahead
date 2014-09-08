@@ -1,3 +1,8 @@
+/*
+ * @author Carlos A. Junior
+ * http://carlos.inf.br
+ * version: 1.1
+ */
 (function ( $ ) {
 
 	$.fn.vraptortypeahead = function(options) {
@@ -62,7 +67,7 @@
 						for (var i= 0; i < data.list.length; i++) {
 							var object = data.list[i];
 							
-							descriptions[i] = $.fn.vraptortypeahead.builders.descriptionString(object, settings);
+							descriptions[i] = $.fn.vraptortypeahead.descriptionString(object, settings);
 							ids			[i] = object[settings.out.id];
 							fullObjects [i] = object;
 						}
@@ -76,36 +81,27 @@
 		return this;
 	};
 	
-	$.fn.vraptortypeahead.builders = {
-			
-	};
-	
-	$.fn.vraptortypeahead.builders.descriptionString = function(object, settings){
+	$.fn.vraptortypeahead.descriptionString = function(object, settings){
 		
-		if(settings.out.description.indexOf(',') > 0){
-			var fields = settings.out.description.split(',');
+		var description = "";
+		for (var i = 0; i < settings.out.description.length; i++) {
+			var field = settings.out.description[i];
 			
-			var description = "";
-			for (var i= 0; i < fields.length; i++) {
-				if(settings.methods.customizeWhen != undefined){
-					description += settings.methods.customizeWhen(object[fields[i]], object, fields[i]);
-				}
-				else{
-					description += object[fields[i]] + " ";
-				}
+			// Applies all after this char.
+			if((/^#/).test(field)){
+				description += field.replace("#", '');
+			}else{
+				description += object[field] + " ";
 			}
-			
-			return description;
 		}
-		else{
-			return object[settings.out.description];
-		}
+		
+		return description;
 	};
 	
 	$.fn.vraptortypeahead.defaults = {
 		out: 		{
 			id: 		 null,
-			description: null,
+			description: [],
 			storeId:	 null
 		},
 		uri: 		null,
