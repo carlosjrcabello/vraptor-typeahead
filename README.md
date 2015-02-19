@@ -1,4 +1,4 @@
-This is a simple extension for Twitter Bootstrap Typeahead (2.3.x) to work with Bootstrap 2 or 3 on Java projects with *VRaptor MVC framework*, on versions 3.x and 4.x.
+This is a simple extension based in older Twitter Bootstrap Typeahead (2.3.x) to work with Bootstrap 2 or 3 on Java projects with *VRaptor MVC framework*, on versions 3.x and 4.x.
 
 How to use
 
@@ -49,7 +49,7 @@ Still on JSP pages (attempts to c:url tag on uri proprety).
 ```javascript
 $("#descricaoCidade").vraptortypeahead({
 	//Number of chars to trigger the search.
-    minLength:3,
+    minLength: 3,
     // HTTP Post params.
     params: {
         name: "cidade.nome"
@@ -59,7 +59,7 @@ $("#descricaoCidade").vraptortypeahead({
     // storeId - ID of html input that will receive the selected object id.
     out: {
         description: [
-        	"nome", "# - ", "uf"
+        	"nome", "# - ", "estado.nome", "# - ", "estado.pais.nome"
         ],
         id: "idCidade",
         storeId: "#idCidade"
