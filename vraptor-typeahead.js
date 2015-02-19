@@ -1,7 +1,7 @@
 /*
  * @author Carlos A. Junior
  * http://carlos.inf.br
- * version: 1.1
+ * version: 1.1.2
  */
 (function ( $ ) {
 
@@ -23,15 +23,20 @@
 				var selected = null;
 				for ( var i = 0; i < descriptions.length; i++) {
 					if(descriptions[i] === item){
-						$(settings.out.storeId).val(ids[i]);
-						
+
+                        if(settings.debug){
+                            console.log("Set selected value [" + ids[i] + "] at element [" + settings.out.storeId + "]");
+                        }
+
+						$(settings.out.storeId).val(ids[i]).trigger('blur');
+
 						selected = fullObjects[i];
 						
 						break;
 					}
 				}
 				if(settings.debug){
-					console.log("invoking events");
+					console.log("Triggering events...");
 				}
 				
 				settings.events.change(selected);
@@ -48,10 +53,9 @@
 				args[settings.params.name] = query;
 				
 				if(settings.debug){
-					console.log(query);
-					console.log("settings.uri " + settings.uri);
-					console.log("params");
-					console.log(args);
+					console.log("query: "   + query);
+					console.log("uri: "     + settings.uri);
+					console.log("args: "    + args);
 				}
 				
 				ids 			= new Array();
@@ -67,6 +71,8 @@
 						for (var i= 0; i < data.list.length; i++) {
 							var object = data.list[i];
 							
+							console.log(object);
+							
 							descriptions[i] = $.fn.vraptortypeahead.descriptionString(object, settings);
 							ids			[i] = object[settings.out.id];
 							fullObjects [i] = object;
@@ -81,17 +87,38 @@
 		return this;
 	};
 	
+	$.fn.vraptortypeahead.byString = function(o, s) {
+	    s = s.replace(/\[(\w+)\]/g, '.$1'); // convert indexes to properties
+	    s = s.replace(/^\./, '');           // strip a leading dot
+	    var a = s.split('.');
+	    while (a.length) {
+	        var n = a.shift();
+	        if (n in o) {
+	            o = o[n];
+	        } else {
+	            return;
+	        }
+	    }
+	    return o;
+	}
+	
 	$.fn.vraptortypeahead.descriptionString = function(object, settings){
 		
 		var description = "";
 		for (var i = 0; i < settings.out.description.length; i++) {
-			var field = settings.out.description[i];
-			
+
+            var field = settings.out.description[i];
+
 			// Applies all after this char.
 			if((/^#/).test(field)){
 				description += field.replace("#", '');
 			}else{
-				description += object[field] + " ";
+				if(field.indexOf(".")> 0){
+                    description += $.fn.vraptortypeahead.byString(object, field);
+				}
+				else{
+					description += object[field] + " ";
+				}
 			}
 		}
 		
