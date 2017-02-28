@@ -58,15 +58,18 @@ hidden field will contain *name* attribute to be sent to server.
 
 ## Javascript
 
-Since *1.2.0*, all configurations were organized and improved. Below you can see an example how to turns you input into *typeahead* component.
+Since *1.2.0* version, all configurations were organized and improved. Below you can see an example how to turns your input into *typeahead* component.
 
 **Tip**: by convention, there's just one parameter that is sent in all requests, this parameter is **'query'**. It's contains the input text content.
 
 ```javascript
+
+var BASE_URI = "/your-context";
+
 $("#cityName").vraptortypeahead({
     minLength: 3,
     source: {
-    	uri: (dindin.main.getBaseURI() + "financeiro/pagadores/form/ajax/consultar-pagadores/"),
+    	uri: (BASE_URI + "/cities/ajax/find-cities/"),
     	params: {
     		// All your extra params to be appended to mandatory param named as 'query'.
     	}
@@ -83,8 +86,15 @@ $("#cityName").vraptortypeahead({
     }
 });
 ```
+**Tip**: With you use Javascript blocks inside of JSPs pages, you can declare your ajax URI using **c:url value=''/>** to specify the path to controller method.
+
+## Docs
+
+Most important itens you must pay attention:
+
+``ui.list``: an array to describe how to print each result item to user.
 
 
-Events and methods
+
 
 Comming soon...
