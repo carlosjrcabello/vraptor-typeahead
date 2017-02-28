@@ -21,7 +21,7 @@ public void doSearchCities(final String query){
 	try {
 		final ArrayList<City> cities = dao.find("select c from tb_city c order by c.name");
 		
-		this.result.use(Results.json()).from(pagadores).serialize();
+		this.result.use(Results.json()).from(cities).serialize();
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
