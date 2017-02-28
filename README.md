@@ -10,9 +10,9 @@ It's so simple to procude data, basically you just have to create one method tha
 
 ```java
 @Post({
-	"/form/ajax/consultar-pagadores/"
+	"/cities/ajax/find-cities/"
 })
-public void doConsultarPagadores(final String query){
+public void doSearchCities(final String query){
 	
 	try {
 		final ArrayList<City> cities = dao.find("select c from tb_city c order by c.name");
@@ -23,7 +23,13 @@ public void doConsultarPagadores(final String query){
 	}
 }
 ```
-On your JSP pages.
+
+## JSP pages
+
+On your forms, you must have two fields, the first one will receive some content description from dropdown list and other one, that is hidden. This one will receive the object ID of selection. The
+hidden field will contain *name* attribute to be sent to server.
+
+
 
 ```html
 <div class="form-group">
@@ -33,46 +39,51 @@ On your JSP pages.
 	<input 
 		type="text" 
 		class="form-control input-lg" 
-		id="descricaoCidade" 
-		value="${perfil._cidade}"
-		placeholder="<fmt:message key='label.cidade.placeholder'/>"
+		id="cityName" 
+		value="${place.city.name}"
+		placeholder="Type the name of city"
 	/>
 	<input 
-		type="text" 
-		class="form-control input-lg" 
-		name="inscricao.idCidade"
-		id="idCidade" 
-		value="${perfil.idCidade}"
+		type="hidden" 
+		name="place.city.idCity"
+		id="idCity" 
+		value="${place.city.idCity}"
 	/>
+	
+	<span class="help-inline"></span>
 </div>
 ```
 
-Still on JSP pages (attempts to c:url tag on uri proprety).
+**Tip**: if you are using jQuery.validate on your forms, you can use a span element with 'help-inline' class to store validate messages as others simple input fields. 
+
+## Javascript
+
+Since *1.2.0*, all configurations were organized and improved. Below you can see an example how to turns you input into *typeahead* component.
+
+**Tip**: by convention, there's just one parameter that is sent in all requests, this parameter is **'query'**. It's contains the input text content.
 
 ```javascript
-$("#descricaoCidade").vraptortypeahead({
-	//Number of chars to trigger the search.
+$("#cityName").vraptortypeahead({
     minLength: 3,
-    // HTTP Post params.
-    params: {
-        name: "cidade.nome"
+    source: {
+    	uri: (dindin.main.getBaseURI() + "financeiro/pagadores/form/ajax/consultar-pagadores/"),
+    	params: {
+    		// All your extra params to be appended to mandatory param named as 'query'.
+    	}
     },
-    // These are the fields that will be displayed on typeahead list.
-    // Use "#" as a joker for separator fields
-    // storeId - ID of html input that will receive the selected object id.
-    out: {
-        description: [
-        	"nome", "# - ", "estado.nome", "# - ", "estado.pais.nome"
-        ],
-        id: "idCidade",
-        storeId: "#idCidade"
+    ui: {
+        list: ["idCity", "# - ", "name" , "#<br/>State: ", "state.name"],
+        id: "idCity",
+        input: ["name"],
+        storeAt: "#idCity"
     },
-    uri:    "<c:url value='/basicos/cidades/consulta-cidades-ajax/'/>",
-    debug:  false,
-    // After your select a value, the focus will changed to element below.
-    jumpTo: "#logradouro"
+    debug:  true,
+    events:{
+    	focus: "#descricao"
+    }
 });
 ```
+
 
 Events and methods
 
