@@ -4,6 +4,10 @@
 This plugin works as an specific extension for [Bootstrap 3 Typeahead](https://github.com/bassjobsen/Bootstrap-3-Typeahead) plugin to keep development with [VRaptor 3 and 4](http://www.vraptor.org) 
 agile and simple when your projects use Twitter Bootstrap 3.
 
+## Dependencies
+
+You must have [Bootstrap 3 Typeahead](https://github.com/bassjobsen/Bootstrap-3-Typeahead), you can download it [here](https://github.com/bassjobsen/Bootstrap-3-Typeahead).
+
 ##How to use
 
 It's so simple to procude data, basically you just have to create one method that serializes his response using *Results.json()* class. See this example below. 
@@ -28,8 +32,6 @@ public void doSearchCities(final String query){
 
 On your forms, you must have two fields, the first one will receive some content description from dropdown list and other one, that is hidden. This one will receive the object ID of selection. The
 hidden field will contain *name* attribute to be sent to server.
-
-
 
 ```html
 <div class="form-group">
@@ -94,7 +96,12 @@ Most important itens you must pay attention:
 
 ``ui.list``: an array to describe how to print each result item to user.
 
+``ui.id``: what is the field of JSON object of ajax response.
 
+``ui.input``: an array to describe how to print selected item inside input text.
 
+``ui.storeAt``: what is the input element's ID that will receive the selected object ID.
+
+``events.focus``: after select some item, the specified element ID will gain focus.
 
 Comming soon...
