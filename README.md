@@ -1,3 +1,9 @@
+
+# VRaptor Typeahead
+
+This plugin works as an specific extension for [Bootstrap 3 Typeahead](https://github.com/bassjobsen/Bootstrap-3-Typeahead) plugin to keep development with [VRaptor 3 and 4](http://www.vraptor.org) agile and simple.
+
+
 This is a simple extension based in older Twitter Bootstrap Typeahead (2.3.x) to work with Bootstrap 2 or 3 on Java projects with *VRaptor MVC framework*, on versions 3.x and 4.x.
 
 How to use
