@@ -1,28 +1,25 @@
 
 # VRaptor Typeahead
 
-This plugin works as an specific extension for [Bootstrap 3 Typeahead](https://github.com/bassjobsen/Bootstrap-3-Typeahead) plugin to keep development with [VRaptor 3 and 4](http://www.vraptor.org) agile and simple.
+This plugin works as an specific extension for [Bootstrap 3 Typeahead](https://github.com/bassjobsen/Bootstrap-3-Typeahead) plugin to keep development with [VRaptor 3 and 4](http://www.vraptor.org) 
+agile and simple when your projects use Twitter Bootstrap 3.
 
+##How to use
 
-This is a simple extension based in older Twitter Bootstrap Typeahead (2.3.x) to work with Bootstrap 2 or 3 on Java projects with *VRaptor MVC framework*, on versions 3.x and 4.x.
-
-How to use
+It's so simple to procude data, basically you just have to create one method that serializes his response using *Results.json()* class. See this example below. 
 
 ```java
-@Post("/basicos/cidades/consulta-cidades-ajax/")
-public void findCidadesAJAX(Cidade cidade){
-	// Your validations...
-	if(cidade == null || cidade.getDescricao() == null){
-		this.result.nothing();
-		return;
-	}
+@Post({
+	"/form/ajax/consultar-pagadores/"
+})
+public void doConsultarPagadores(final String query){
+	
 	try {
-		ArrayList<Cidade> cidades = dao.findByQuery("SELECT * FROM tb_cities");
-		// The list will be serialized named as 'list'. The JS plugin will be detected this.
-		this.result.use(Results.json()).from(cidades).serialize();
+		final ArrayList<City> cities = dao.find("select c from tb_city c order by c.name");
+		
+		this.result.use(Results.json()).from(pagadores).serialize();
 	} catch (Exception e) {
 		e.printStackTrace();
-		this.result.nothing();
 	}
 }
 ```
