@@ -1,7 +1,7 @@
 /**
  * @author Carlos Spohr (carlos.spohr@gmail.com)
  * 
- * @version 1.2.0
+ * @version 1.2.1
  * 
  * @see https://github.com/bassjobsen/Bootstrap-3-Typeahead
  */
@@ -18,98 +18,100 @@
 			return;
 		}
 		
-		var settings = $.extend(true, $.fn.vraptortypeahead.defaults, options);
+		//var settings = $.extend(true, {}, $.fn.vraptortypeahead.defaults, options);
+		options = $.extend(true, {}, $.fn.vraptortypeahead.defaults, options);
 		
-		if($(settings.ui.storeAt).length == 0){
-			console.error("Target input '" + settings.ui.storeAt + "' to store selected object ID doesn't not exists. Please fix it.");
+		if($(options.ui.storeAt).length == 0){
+			console.error("Target input '" + options.ui.storeAt + "' to store selected object ID doesn't not exists. Please fix it.");
 			return;
 		}
 		
-		return $(this).typeahead({
-			minLength: settings.minLength,
-			updater:function(item){
-				
-				var selected = null;
-				for ( var i = 0; i < descriptions.length; i++) {
+		return this.each(function(){
+			$(this).typeahead({
+				minLength: options.minLength,
+				updater:function(item){
 					
-					if(descriptions[i] === item){
-						$(settings.ui.storeAt).val(ids[i]);
-						selected = fullObjects[i];
-						break;
-					}
-				}
-				
-				if(settings.ui.input != undefined){
-					item = $.fn.vraptortypeahead.descriptionString(selected, settings.ui.input);
-				}
-				
-				if($(settings.ui.storeAt).valid != undefined){
-					$(settings.ui.storeAt).valid();
-				}
-				
-				if(settings.events.change != undefined){
-					if(settings.debug){
-						console.log("Triggering events...");
-					}
-					
-					settings.events.change(selected);
-				}
-				
-				if(settings.events.focus != undefined && settings.events.focus != null){
-					$(settings.events.focus).focus().select();
-				}
-				
-				return item;
-			},
-			source: function(query, process){
-				
-				settings.source.params['query'] = this.value;
-				
-				if(settings.debug){
-					console.log(settings.source.uri);
-					console.debug(settings.source.params);
-				}
-				
-				ids 			= new Array();
-				descriptions 	= new Array();
-				fullObjects		= new Array();
-				
-				return $.post(settings.source.uri, settings.source.params, function(data){
-					
-					if(data == null){
-						if(settings.debug){
-							console.log("Your request has no response.");
-						}
-						return process(descriptions);
-					}
-					
-					if(data[settings.source.jsonListName] == undefined){
-						console.error("Response object doesn't contains JSON object list. You had configured this one:  '" + settings.source.jsonListName + "'.");
-					}
-					
-					var resultContent = data[settings.source.jsonListName];
-					
-					if(resultContent == null){
-						if(settings.debug){
-							console.log("Your request has no response.");
-						}
-						return process(descriptions);
-					}
-					
-					for (var i= 0; i < resultContent.length; i++) {
-						var object = resultContent[i];
+					var selected = null;
+					for ( var i = 0; i < descriptions.length; i++) {
 						
-						descriptions[i] = $.fn.vraptortypeahead.descriptionString(object, settings.ui.list);
-						ids			[i] = object[settings.ui.id];
-						fullObjects [i] = object;
+						if(descriptions[i] === item){
+							$(options.ui.storeAt).val(ids[i]);
+							selected = fullObjects[i];
+							break;
+						}
 					}
 					
-					return process($.fn.vraptortypeahead.highlight(descriptions, query));
-				});
-			}
+					if(options.ui.input != undefined){
+						item = $.fn.vraptortypeahead.descriptionString(selected, options.ui.input);
+					}
+					
+					if($(options.ui.storeAt).valid != undefined){
+						$(options.ui.storeAt).valid();
+					}
+					
+					if(options.events.change != undefined){
+						if(options.debug){
+							console.log("Triggering events...");
+						}
+						
+						options.events.change(selected);
+					}
+					
+					if(options.events.focus != undefined && options.events.focus != null){
+						$(options.events.focus).focus().select();
+					}
+					
+					return item;
+				},
+				source: function(query, process){
+					
+					options.source.params['query'] = this.value;
+					
+					if(options.debug){
+						console.log(options.source.uri);
+						console.debug(options.source.params);
+					}
+					
+					ids 			= new Array();
+					descriptions 	= new Array();
+					fullObjects		= new Array();
+					
+					return $.post(options.source.uri, options.source.params, function(data){
+						
+						if(data == null){
+							if(options.debug){
+								console.log("Your request has no response.");
+							}
+							return process(descriptions);
+						}
+						
+						if(data[options.source.jsonListName] == undefined){
+							console.error("Response object doesn't contains JSON object list. You had configured this one:  '" + options.source.jsonListName + "'.");
+						}
+						
+						var resultContent = data[options.source.jsonListName];
+						
+						if(resultContent == null){
+							if(options.debug){
+								console.log("Your request has no response.");
+							}
+							return process(descriptions);
+						}
+						
+						for (var i= 0; i < resultContent.length; i++) {
+							var object = resultContent[i];
+							
+							descriptions[i] = $.fn.vraptortypeahead.descriptionString(object, options.ui.list);
+							ids			[i] = object[options.ui.id];
+							fullObjects [i] = object;
+						}
+						
+						//return process($.fn.vraptortypeahead.highlight(descriptions, query));
+						return process(descriptions);
+					});
+				}
+			});
 		});
-		
-		return this;
 	};
 	
 	$.fn.vraptortypeahead.highlight = function(descriptions, term) {
