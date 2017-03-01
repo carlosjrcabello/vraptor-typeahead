@@ -18,7 +18,6 @@
 			return;
 		}
 		
-		//var settings = $.extend(true, {}, $.fn.vraptortypeahead.defaults, options);
 		options = $.extend(true, {}, $.fn.vraptortypeahead.defaults, options);
 		
 		if($(options.ui.storeAt).length == 0){
@@ -29,6 +28,7 @@
 		return this.each(function(){
 			$(this).typeahead({
 				minLength: options.minLength,
+				showHintOnFocus: options.showHintOnFocus,
 				updater:function(item){
 					
 					var selected = null;
@@ -169,6 +169,7 @@
 	
 	$.fn.vraptortypeahead.defaults = {
 		minLength:5,
+		showHintOnFocus: false,
 		source: {
 			uri: null,
 			params:{},
